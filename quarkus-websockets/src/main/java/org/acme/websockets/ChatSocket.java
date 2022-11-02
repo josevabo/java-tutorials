@@ -20,7 +20,11 @@ public class ChatSocket {
 
     @OnOpen
     public void onOpen(Session session, @PathParam("username") String username) {
+//        System.out.println(session.toString());
+//        System.out.println(session.toString());
         sessions.put(username, session);
+        System.out.println(username);
+        broadcastExceptSession(username + " joined", session);
     }
 
     @OnClose
@@ -37,6 +41,7 @@ public class ChatSocket {
 
     @OnMessage
     public void onMessage(String message, @PathParam("username") String username) {
+        System.out.println(message);
         if (message.equalsIgnoreCase("_ready_")) {
             broadcast("User " + username + " joined");
         } else {
@@ -51,6 +56,18 @@ public class ChatSocket {
                     System.out.println("Unable to send message: " + result.getException());
                 }
             });
+        });
+    }
+
+    private void broadcastExceptSession(String message, Session exceptSession) {
+        sessions.values().forEach(s -> {
+            if (!s.equals(exceptSession)) {
+                s.getAsyncRemote().sendObject(message, result ->  {
+                    if (result.getException() != null) {
+                        System.out.println("Unable to send message: " + result.getException());
+                    }
+                });
+            };
         });
     }
 
