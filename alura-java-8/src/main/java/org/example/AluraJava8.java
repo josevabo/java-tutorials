@@ -1,13 +1,8 @@
 package org.example;
 
-import java.time.LocalDate;
-import java.time.Month;
-import java.time.Period;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -16,7 +11,7 @@ import java.util.stream.Stream;
 
 public class AluraJava8
 {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws NoSuchFieldException, IllegalAccessException {
         List<String> palavras = new ArrayList<>();
         String palavra = "avc";
 
@@ -219,6 +214,50 @@ public class AluraJava8
         DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String valorFormatado = proximasOlimpiadas.format(formatador);
         System.out.println(valorFormatado);
+
+        DateTimeFormatter formatadorComHoras = DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm:ss");
+        LocalDateTime agora = LocalDateTime.now();
+        System.out.println(agora.format(formatadorComHoras));
+
+        YearMonth anoEMes = YearMonth.of(2015, Month.JANUARY);
+
+        LocalTime intervalo = LocalTime.of(12, 30);
+        System.out.println(intervalo);
+
+        System.out.println(LocalDateTime.of(2022,Month.DECEMBER, 17, 12, 24));
+
+        ZonedDateTime horaComZona = ZonedDateTime.now();
+
+        System.out.println(horaComZona);
+
+        horaComZona = ZonedDateTime.of(agora, ZoneId.of("GMT"));
+        System.out.println(horaComZona);
+//        horaComZona = ZonedDateTime.of(agora, ZoneId.of("EST"));
+//        System.out.println(horaComZona);
+        horaComZona = ZonedDateTime.of(agora, ZoneId.of("+6"));
+        System.out.println(horaComZona);
+
+        LocalDate data = LocalDate.of(2099,1,5);
+        System.out.println(data);
+        data = LocalDate.of(2099,Month.JANUARY,5);
+        System.out.println(data);
+
+        LocalDateTime antes = LocalDateTime.of(2022,10,01,12,00);
+        LocalDateTime depois = LocalDateTime.of(2023,8,5,10,00);
+
+        Period periodo2 = Period.between(depois.toLocalDate(), antes.toLocalDate());
+        System.out.println(periodo2);
+        periodo2 = Period.between(antes.toLocalDate(), depois.toLocalDate());
+        System.out.println(periodo2);
+        periodo2 = Period.between(antes.toLocalDate(), antes.toLocalDate());
+        System.out.println(periodo2);
+        Arrays.asList(periodo2.getClass().getDeclaredFields()).forEach(System.out::println);
+//        periodo2.getClass().getDeclaredField("days").setAccessible(true);//setAccessible(true);
+//        periodo2.getClass().getDeclaredField("days").set(periodo2.getDays(), 15);//setAccessible(true);
+//        System.out.println(periodo2);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        System.out.println(antes.format(formatter));
+
 
     }
 
